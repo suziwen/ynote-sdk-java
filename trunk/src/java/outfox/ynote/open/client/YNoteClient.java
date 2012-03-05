@@ -162,10 +162,6 @@ public class YNoteClient {
         return parts[0] + "yws/open/";
     }
 
-//    OAuthMessage request = accessor.newRequestMessage(httpMethod,
-//            url, parameters);
-//    OAuthResponseMessage response = CLIENT.access(request,
-//            ParameterStyle.AUTHORIZATION_HEADER);
     //
     // Notebook operations
     //
