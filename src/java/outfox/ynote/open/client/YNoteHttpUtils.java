@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,9 +107,11 @@ public class YNoteHttpUtils {
             // encode our ynote parameters
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             for(Entry<String, String> entry : formParams.entrySet()) {
-                pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+                String key = new String(entry.getKey().getBytes(), YNoteConstants.ENCODING);
+                String value = new String(entry.getValue().getBytes(), YNoteConstants.ENCODING);
+                pairs.add(new BasicNameValuePair(key, value));
             }
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, "UTF-8");
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, YNoteConstants.ENCODING);
             post.setEntity(entity);
         }
         post.addHeader(oauthHeader);
@@ -149,8 +152,10 @@ public class YNoteHttpUtils {
                     entity.addPart(parameter.getKey(),
                             new FileBody((File)parameter.getValue()));
                 } else if (parameter.getValue() != null){
-                    entity.addPart(parameter.getKey(), 
-                            new StringBody(parameter.getValue().toString()));
+                    String value = new String(parameter.getValue().toString().getBytes(),
+                            YNoteConstants.ENCODING);
+                    entity.addPart(parameter.getKey(), new StringBody(value,
+                            Charset.forName(YNoteConstants.ENCODING)));
                 }
             }
             post.setEntity(entity);
@@ -180,6 +185,8 @@ public class YNoteHttpUtils {
         try {
             OAuthMessage message = accessor.newRequestMessage(method,
                     url, parameters == null ? null : parameters.entrySet());
+            // System.out.println(OAuthSignatureMethod.getBaseString(message));
+            // System.out.println(message.getAuthorizationHeader(null));
             return new BasicHeader("Authorization",
                     message.getAuthorizationHeader(null));
         } catch (OAuthException e) {
@@ -224,8 +231,6 @@ public class YNoteHttpUtils {
         }
     }
 
-    public static final String UTF8_ENCODING = "UTF-8";
-
     /**
      * Get the response content as a string.
      *
@@ -243,7 +248,7 @@ public class YNoteHttpUtils {
                 bytes.write(buffer, 0, n);
             }
             bytes.close();
-            return new String(bytes.toByteArray(), UTF8_ENCODING);
+            return new String(bytes.toByteArray());
         } finally {
             // release the http response
             response.close();
