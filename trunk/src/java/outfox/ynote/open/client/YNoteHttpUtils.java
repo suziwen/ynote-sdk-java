@@ -107,9 +107,7 @@ public class YNoteHttpUtils {
             // encode our ynote parameters
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             for(Entry<String, String> entry : formParams.entrySet()) {
-                String key = new String(entry.getKey().getBytes(), YNoteConstants.ENCODING);
-                String value = new String(entry.getValue().getBytes(), YNoteConstants.ENCODING);
-                pairs.add(new BasicNameValuePair(key, value));
+                pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs, YNoteConstants.ENCODING);
             post.setEntity(entity);
@@ -152,9 +150,8 @@ public class YNoteHttpUtils {
                     entity.addPart(parameter.getKey(),
                             new FileBody((File)parameter.getValue()));
                 } else if (parameter.getValue() != null){
-                    String value = new String(parameter.getValue().toString().getBytes(),
-                            YNoteConstants.ENCODING);
-                    entity.addPart(parameter.getKey(), new StringBody(value,
+                    entity.addPart(parameter.getKey(), new StringBody(
+                            parameter.getValue().toString(),
                             Charset.forName(YNoteConstants.ENCODING)));
                 }
             }
@@ -248,7 +245,7 @@ public class YNoteHttpUtils {
                 bytes.write(buffer, 0, n);
             }
             bytes.close();
-            return new String(bytes.toByteArray());
+            return new String(bytes.toByteArray(), YNoteConstants.ENCODING);
         } finally {
             // release the http response
             response.close();
