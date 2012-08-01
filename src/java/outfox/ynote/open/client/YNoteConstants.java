@@ -27,9 +27,9 @@ public class YNoteConstants {
     /**
      * YNote Sandbox Service URLS
      */
-    public static final String SANDBOX_REQUEST_TOKEN_URL = "http://sandbox.note.corp.youdao.com/oauth/request_token";
-    public static final String SANDBOX_USER_AUTHORIZATION_URL = "http://sandbox.note.corp.youdao.com/oauth/authorize";
-    public static final String SANDBOX_ACCESS_TOKEN_URL = "http://sandbox.note.corp.youdao.com/oauth/access_token";
+    public static final String SANDBOX_REQUEST_TOKEN_URL = "http://sandbox.note.youdao.com/oauth/request_token";
+    public static final String SANDBOX_USER_AUTHORIZATION_URL = "http://sandbox.note.youdao.com/oauth/authorize";
+    public static final String SANDBOX_ACCESS_TOKEN_URL = "http://sandbox.note.youdao.com/oauth/access_token";
 
     /**
      * Request parameter names
