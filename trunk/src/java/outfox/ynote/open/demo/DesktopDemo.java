@@ -266,8 +266,8 @@ public class DesktopDemo {
         note.setAuthor("Li Lei");
         note.setSize(100);
         note.setSource("www.youdao.com");
-        note.setTitle("����");
-        note.setContent("����");
+        note.setTitle("测试");
+        note.setContent("测试");
         try {
             return client.createNote(notebookPath, note);
         } catch (YNoteException e) {

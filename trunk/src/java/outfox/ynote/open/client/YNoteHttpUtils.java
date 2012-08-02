@@ -22,8 +22,6 @@ import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthException;
 import net.oauth.OAuthMessage;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -43,6 +41,9 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+
+import outfox.ynote.json.JSONException;
+import outfox.ynote.json.JSONObject;
 
 
 /**
@@ -182,8 +183,10 @@ public class YNoteHttpUtils {
         try {
             OAuthMessage message = accessor.newRequestMessage(method,
                     url, parameters == null ? null : parameters.entrySet());
-            // System.out.println(OAuthSignatureMethod.getBaseString(message));
-            // System.out.println(message.getAuthorizationHeader(null));
+//            System.out.print("Base String:\t");
+//            System.out.println(OAuthSignatureMethod.getBaseString(message));
+//            System.out.print("OAuth Header:\t");
+//            System.out.println(message.getAuthorizationHeader(null));
             return new BasicHeader("Authorization",
                     message.getAuthorizationHeader(null));
         } catch (OAuthException e) {
@@ -209,7 +212,7 @@ public class YNoteHttpUtils {
             // server error, usually response in json, parse the error
             String content = getResponseContent(body);
             try {
-                JSONObject json = JSONObject.fromObject(content);
+                JSONObject json = new JSONObject(content);
                 int errorCode = json.getInt(YNoteException.ERROR);
                 if (errorCode >= 1000) {
                     return new YNoteOAuthException(json);

@@ -6,7 +6,7 @@
  */
 package outfox.ynote.open.client;
 
-import net.sf.json.JSONObject;
+import outfox.ynote.json.JSONObject;
 
 
 /**
