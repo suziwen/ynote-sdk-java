@@ -20,12 +20,12 @@ import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 
+import outfox.ynote.json.JSONArray;
+import outfox.ynote.json.JSONObject;
 import outfox.ynote.open.data.Note;
 import outfox.ynote.open.data.Notebook;
 import outfox.ynote.open.data.Resource;
@@ -82,6 +82,8 @@ public class YNoteClient {
             // extract the request token and token secret
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
+//            System.out.println("Grant Request Token:");
+//            System.out.println(content);
             Map<String, String> model = YNoteHttpUtils.parseOAuthResponse(content);
             accessor.requestToken = model.get(OAuth.OAUTH_TOKEN);
             accessor.tokenSecret = model.get(OAuth.OAUTH_TOKEN_SECRET);
@@ -127,6 +129,8 @@ public class YNoteClient {
             // extract the access token and token secret
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
+//            System.out.println("Grant Access Token:");
+//            System.out.println(content);
             Map<String, String> model = YNoteHttpUtils.parseOAuthResponse(content);
             accessor.accessToken = model.get(OAuth.OAUTH_TOKEN);
             accessor.tokenSecret = model.get(OAuth.OAUTH_TOKEN_SECRET);
@@ -206,9 +210,9 @@ public class YNoteClient {
                     null, accessor);
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
-            JSONArray array = JSONArray.fromObject(content);
+            JSONArray array = new JSONArray(content);
             List<Notebook> notebooks = new ArrayList<Notebook>();
-            for (int i = 0; i < array.size(); i++) {
+            for (int i = 0; i < array.length(); i++) {
                 Notebook notebook = new Notebook(array.get(i).toString());
                 notebooks.add(notebook);
             }
@@ -233,19 +237,19 @@ public class YNoteClient {
             YNoteException {
         lock.readLock().lock();
         try {
-        String url = getBaseURL() + "notebook/list.json";
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put(YNoteConstants.NOTEBOOK_PARAM, notebookPath);
-        HttpResponse response = YNoteHttpUtils.doPostByUrlEncoded(url,
-                parameters, accessor);
-        String content = YNoteHttpUtils.getResponseContent(
-                response.getEntity().getContent());
-        JSONArray array = JSONArray.fromObject(content);
-        List<String> notes = new ArrayList<String>();
-        for (int i = 0; i < array.size(); i++) {
-            notes.add(array.getString(i));
-        }
-        return notes;
+            String url = getBaseURL() + "notebook/list.json";
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put(YNoteConstants.NOTEBOOK_PARAM, notebookPath);
+            HttpResponse response = YNoteHttpUtils.doPostByUrlEncoded(url,
+                    parameters, accessor);
+            String content = YNoteHttpUtils.getResponseContent(
+                    response.getEntity().getContent());
+            JSONArray array = new JSONArray(content);
+            List<String> notes = new ArrayList<String>();
+            for (int i = 0; i < array.length(); i++) {
+                notes.add(array.getString(i));
+            }
+            return notes;
         } finally {
             lock.readLock().unlock();
         }
@@ -274,7 +278,7 @@ public class YNoteClient {
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
             // TODO return the notebook instance
-            JSONObject json = JSONObject.fromObject(content);
+            JSONObject json = new JSONObject(content);
             return json.getString(Notebook.PATH);
         } finally {
             lock.readLock().unlock();
@@ -368,7 +372,7 @@ public class YNoteClient {
                     parameters, accessor);
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
-            JSONObject json = JSONObject.fromObject(content);
+            JSONObject json = new JSONObject(content);
             note.setPath(json.getString(Note.PATH));
             // TODO set the create/modify time of the note
             return note;
@@ -430,7 +434,7 @@ public class YNoteClient {
                     parameters, accessor);
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
-            JSONObject json = JSONObject.fromObject(content);
+            JSONObject json = new JSONObject(content);
             return json.getString(Note.PATH);
         } finally {
             lock.readLock().unlock();
@@ -483,8 +487,8 @@ public class YNoteClient {
                     parameters, accessor);
             String content = YNoteHttpUtils.getResponseContent(
                     response.getEntity().getContent());
-            JSONObject json = JSONObject.fromObject(content);
-            if (json.containsKey(Resource.SRC)) {
+            JSONObject json = new JSONObject(content);
+            if (json.has(Resource.SRC)) {
                 // attachment
                 return new Resource(json.getString(Resource.URL),
                         json.getString(Resource.SRC));

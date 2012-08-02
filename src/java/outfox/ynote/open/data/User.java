@@ -8,7 +8,7 @@ package outfox.ynote.open.data;
 
 import java.util.Date;
 
-import net.sf.json.JSONObject;
+import outfox.ynote.json.JSONObject;
 import outfox.ynote.open.client.YNoteConstants;
 
 /**
@@ -48,7 +48,7 @@ public class User {
     }
 
     public User(String json) {
-        JSONObject jsonObj = JSONObject.fromObject(json);
+        JSONObject jsonObj = new JSONObject(json);
         this.userId = jsonObj.getString(USER_ID);
         this.totalSize = jsonObj.getLong(TOTAL_SIZE);
         this.usedSize = jsonObj.getLong(USED_SIZE);

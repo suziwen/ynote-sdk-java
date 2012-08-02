@@ -7,7 +7,7 @@
 package outfox.ynote.open.client;
 
 import net.oauth.OAuthException;
-import net.sf.json.JSONObject;
+import outfox.ynote.json.JSONObject;
 
 /**
  * Exception throwed by YNote OAuth framework.
