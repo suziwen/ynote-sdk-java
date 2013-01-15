@@ -17,8 +17,8 @@ public class Resource {
     public static final String SRC = "src";
     public static final String URL = "url";
 
-    public static final String IMAGE_TAG_TEMPLATE = "<img src=\"%resource%\">";
-    public static final String ATTACHMENT_TAG_TEMPLATE = "<img path=\"%resource%\" src=\"%icon%\">";
+    public static final String IMAGE_TAG_TEMPLATE = "<img src=\"%resource%\" />";
+    public static final String ATTACHMENT_TAG_TEMPLATE = "<img path=\"%resource%\" src=\"%icon%\" />";
 
     /**
      * url for this resource

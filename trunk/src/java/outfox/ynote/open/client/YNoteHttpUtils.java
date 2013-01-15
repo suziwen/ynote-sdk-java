@@ -143,8 +143,9 @@ public class YNoteHttpUtils {
                 null, accessor);
         if (formParams != null) {
             // encode our ynote parameters
-            MultipartEntity entity =
-                new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            MultipartEntity entity = new MultipartEntity(
+                    HttpMultipartMode.BROWSER_COMPATIBLE, null,
+                    Charset.forName("UTF-8"));
             for (Entry<String, Object> parameter : formParams.entrySet()) {
                 if (parameter.getValue() instanceof File) {
                     // deal with file particular
@@ -213,12 +214,7 @@ public class YNoteHttpUtils {
             String content = getResponseContent(body);
             try {
                 JSONObject json = new JSONObject(content);
-                int errorCode = json.getInt(YNoteException.ERROR);
-                if (errorCode >= 1000) {
-                    return new YNoteOAuthException(json);
-                } else {
-                    return new YNoteException(json);
-                }
+                return new YNoteException(json);
             } catch (JSONException e) {
                 // could not parse the error message as json
                 throw new IOException(content);
