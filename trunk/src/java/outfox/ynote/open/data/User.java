@@ -21,7 +21,8 @@ public class User {
     /**
      * JSON field names for user 
      */
-    public static final String USER_ID = "user";
+    public static final String ID = "id";
+    public static final String USER_NAME = "user";
     public static final String TOTAL_SIZE = "total_size";
     public static final String USED_SIZE = "used_size";
     public static final String REGISTER_TIME = "register_time";
@@ -29,7 +30,8 @@ public class User {
     public static final String LAST_MODIFY_TIME = "last_modify_time";
     public static final String DEFAULT_NOTEBOOK = "default_notebook";
 
-    private String userId;
+    private String id;
+    private String userName;
 
     private long totalSize;
     private long usedSize;
@@ -49,7 +51,8 @@ public class User {
 
     public User(String json) {
         JSONObject jsonObj = new JSONObject(json);
-        this.userId = jsonObj.getString(USER_ID);
+        this.id = jsonObj.getString(ID);
+        this.userName = jsonObj.getString(USER_NAME);
         this.totalSize = jsonObj.getLong(TOTAL_SIZE);
         this.usedSize = jsonObj.getLong(USED_SIZE);
         this.registerTime = jsonObj.getLong(REGISTER_TIME);
@@ -59,17 +62,31 @@ public class User {
     }
 
     /**
-     * @return the userId
+     * @return the id of the user
      */
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @param userId the userId to set
+     * @param id the user id to set
      */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * @param userName the userName to set
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     /**
@@ -157,7 +174,8 @@ public class User {
     }
 
     public String toString() {
-        return "[User userId=" + userId
+        return "[User id=" + id
+                + ", userName=" + userName
                 + ", totalSize=" + totalSize
                 + ", usedSize=" + usedSize
                 + ", registerTime=" + YNoteConstants.DATE_FORMATTER.format(new Date(registerTime))
