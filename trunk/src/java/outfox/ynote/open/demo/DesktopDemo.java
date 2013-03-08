@@ -51,8 +51,8 @@ public class DesktopDemo {
                 YNoteConstants.SANDBOX_USER_AUTHORIZATION_URL,
                 YNoteConstants.SANDBOX_ACCESS_TOKEN_URL);
 
-    private static final String CONSUMER_KEY = "your key";
-    private static final String CONSUMER_SECRET = "your secret";
+    private static final String CONSUMER_KEY = "your consumer key";
+    private static final String CONSUMER_SECRET = "your consumer secret";
     // sandbox consumer
     private static final OAuthConsumer CONSUMER = new OAuthConsumer(null,
             CONSUMER_KEY, CONSUMER_SECRET, SANDBOX_SERVICE_PROVIDER);
@@ -61,7 +61,7 @@ public class DesktopDemo {
 
     public static void main(String[] args) throws Exception {
         
-        // load the save the access token if exists
+        // load the saved access token if exists
         File file = new File("conf", "access_token");
         if (file.exists()) {
             Scanner input = new Scanner(file);
@@ -84,7 +84,7 @@ public class DesktopDemo {
         System.out.println(user);
         List<Notebook> notebooks = getAllNotebooks();
         System.out.println(notebooks);
-        String notebook = createNotebook("New_Notebook");
+        String notebook = createNotebook("New_Notebook", null);
         System.out.println("New Notebook is create " + notebook);
         // create a note under this notebook
         Note note = createNote(notebooks.get(0).getPath());
@@ -225,16 +225,16 @@ public class DesktopDemo {
         return notes;
     }
 
-    private static String createNotebook(final String name) throws Exception {
+    private static String createNotebook(final String name, final String group) throws Exception {
         String notebook = null;
         try {
-            notebook = client.createNotebook(name);
+            notebook = client.createNotebook(name, group);
         } catch (YNoteException e) {
             if (e.getErrorCode() == 307 || e.getErrorCode() == 1017) {
                 notebook = doOAuth(new Callable<String>() {
                     @Override
                     public String call() throws Exception {
-                        return client.createNotebook(name);
+                        return client.createNotebook(name, group);
                     }
                 });
             } else {

@@ -35,6 +35,7 @@ public class YNoteConstants {
      * Request parameter names
      */
     public static final String NOTEBOOK_PARAM = "notebook";
+    public static final String GROUP_PARAM = "group";
     public static final String NAME_PARAM = "name";
     public static final String PATH_PARAM = "path";
     public static final String SOURCE_PARAM = "source";
@@ -42,6 +43,8 @@ public class YNoteConstants {
     public static final String TITLE_PARAM = "title";
     public static final String CONTENT_PARAM = "content";
     public static final String FILE_PARAM = "file";
+    public static final String CREATE_TIME_PARAM = "create_time";
+    public static final String MODIFY_TIME_PARAM = "modify_time";
 
     public static final SimpleDateFormat DATE_FORMATTER =
         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
