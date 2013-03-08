@@ -35,8 +35,8 @@ public class Note {
     private String source;
     private long size;
 
-    private long createTime;
-    private long modifyTime;
+    private long createTime = -1;
+    private long modifyTime = -1;
 
     private String content;
 

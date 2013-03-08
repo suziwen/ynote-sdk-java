@@ -260,19 +260,23 @@ public class YNoteClient {
      * <p>This method calls http://note.youdao.com/yws/open/notebook/create.json
      *
      * @param name the notebook name
+     * @param group notebook group, pass empty string to delete the group information
      * @return path the newly created notebook
      * @throws URISyntaxException 
      * @throws IOException 
      * @throws OAuthException 
      * @throws YNoteException 
      */
-    public String createNotebook(String name) throws IOException,
-            YNoteException {
+    public String createNotebook(String name, String group)
+            throws IOException, YNoteException {
         lock.readLock().lock();
         try {
             String url = getBaseURL() + "notebook/create.json";
             Map<String, String> parameters = new HashMap<String, String>();
             parameters.put(YNoteConstants.NAME_PARAM, name);
+            if (group != null) {
+                parameters.put(YNoteConstants.GROUP_PARAM, group);
+            }
             HttpResponse response = YNoteHttpUtils.doPostByUrlEncoded(url,
                     parameters, accessor);
             String content = YNoteHttpUtils.getResponseContent(
@@ -365,6 +369,7 @@ public class YNoteClient {
             parameters.put(YNoteConstants.AUTHOR_PARAM, note.getAuthor());
             parameters.put(YNoteConstants.SOURCE_PARAM, note.getSource());
             parameters.put(YNoteConstants.CONTENT_PARAM, note.getContent());
+            parameters.put(YNoteConstants.CREATE_TIME_PARAM, note.getCreateTime());
             if (!StringUtils.isBlank(notebookPath)) {
                 parameters.put(YNoteConstants.NOTEBOOK_PARAM, notebookPath);
             }
@@ -401,6 +406,7 @@ public class YNoteClient {
             parameters.put(YNoteConstants.AUTHOR_PARAM, note.getAuthor());
             parameters.put(YNoteConstants.SOURCE_PARAM, note.getSource());
             parameters.put(YNoteConstants.CONTENT_PARAM, note.getContent());
+            parameters.put(YNoteConstants.MODIFY_TIME_PARAM, note.getModifyTime());
             HttpResponse response = YNoteHttpUtils.doPostByMultipart(url,
                     parameters, accessor);
             // TODO set modify time and return note
